@@ -1,0 +1,12 @@
+.errorText {
+    color: #c01515;
+    background-color: #fdecea;
+    border-color: #f5c2c0;
+    font-size: 16px;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 15px 20px;
+    border-radius: 3%;
+    text-align: center;
+    border: 1px solid transparent;
+ }
