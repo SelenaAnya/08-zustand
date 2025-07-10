@@ -12,7 +12,10 @@ export default function CreateNoteModal() {
   };
   return (
     <Modal onClose={handleClose}>
-      <NoteForm />
+      <NoteForm
+        onSuccess={handleClose}
+        onClose={handleClose}
+      />
     </Modal>
   );
 }
