@@ -5,6 +5,7 @@ import type { NewNoteData } from "@/types/note";
 import { createNote } from "@/lib/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNoteStore } from "@/lib/store/noteStore";
 
 interface NoteFormProps {
   onSuccess: () => void;
@@ -13,11 +14,13 @@ interface NoteFormProps {
 
 export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
   const queryClient = useQueryClient();
+  const { draft, setDraft, clearDraft } = useNoteStore();
 
   const { mutate } = useMutation({
     mutationFn: (noteData: NewNoteData) => createNote(noteData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
+      clearDraft(); // Очищаємо draft при успішному створенні
       onSuccess();
     },
   });
@@ -33,20 +36,39 @@ export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
       .required("Tag is required"),
   });
 
+  // Використовуємо draft як початкові значення, якщо він існує
+  const initialValues = {
+    title: draft.title || "",
+    content: draft.content || "",
+    tag: draft.tag || "Todo",
+  };
+
   return (
     <Formik
-      initialValues={{ title: "", content: "", tag: "Todo" }}
+      initialValues={initialValues}
       validationSchema={NoteSchema}
       onSubmit={(values, actions) => {
         mutate(values);
         actions.resetForm();
       }}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, values, setFieldValue }) => (
         <Form className={css.form}>
           <div className={css.formGroup}>
             <label htmlFor="title">Title</label>
-            <Field id="title" type="text" name="title" className={css.input} />
+            <Field
+              id="title"
+              type="text"
+              name="title"
+              className={css.input}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setFieldValue("title", e.target.value);
+                setDraft({
+                  ...values,
+                  title: e.target.value,
+                });
+              }}
+            />
             <ErrorMessage name="title" component="span" className={css.error} />
           </div>
 
@@ -58,6 +80,13 @@ export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
               name="content"
               rows={8}
               className={css.textarea}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                setFieldValue("content", e.target.value);
+                setDraft({
+                  ...values,
+                  content: e.target.value,
+                });
+              }}
             />
             <ErrorMessage
               name="content"
@@ -68,7 +97,19 @@ export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
 
           <div className={css.formGroup}>
             <label htmlFor="tag">Tag</label>
-            <Field as="select" id="tag" name="tag" className={css.select}>
+            <Field
+              as="select"
+              id="tag"
+              name="tag"
+              className={css.select}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setFieldValue("tag", e.target.value);
+                setDraft({
+                  ...values,
+                  tag: e.target.value,
+                });
+              }}
+            >
               <option value="Todo">Todo</option>
               <option value="Work">Work</option>
               <option value="Personal">Personal</option>
@@ -82,7 +123,7 @@ export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
             <button
               type="button"
               className={css.cancelButton}
-              onClick={onClose}
+              onClick={onClose} // Draft не очищається при скасуванні
             >
               Cancel
             </button>
