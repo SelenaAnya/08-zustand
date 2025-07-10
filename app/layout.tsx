@@ -16,8 +16,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Create Next App",
-  description: "Manage your notes quickly and easily",
+  title: "NoteHub - Your Personal Note-Taking App",
+  description: "Manage your notes quickly and easily with NoteHub. Organize thoughts, ideas, and important information in your personal digital workspace.",
+  openGraph: {
+    title: "NoteHub - Your Personal Note-Taking App",
+    description: "Manage your notes quickly and easily with NoteHub. Organize thoughts, ideas, and important information in your personal digital workspace.",
+    url: "https://notehub.example.com",
+    images: [
+      {
+        url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+        width: 1200,
+        height: 630,
+        alt: "NoteHub - Personal Note-Taking App",
+      },
+    ],
+    type: "website",
+  },
 };
 
 export default function RootLayout({
