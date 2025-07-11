@@ -11,8 +11,6 @@ import ErrorText from '@/components/Error/Error';
 export default function NotesClient() {
   const { id } = useParams();
   const router = useRouter();
-  const back = () => router.back();
-
   const {
     data: note,
     isError,
@@ -22,6 +20,13 @@ export default function NotesClient() {
     refetchOnMount: false,
   });
 
+  if (isLoading) {
+    return <strong className={css.loading}>Loading note...</strong>;
+  }
+
+  if (!id) {
+    return <ErrorText message="Note ID is required." />;
+  }
   return (
     <>
       {isError && <ErrorText message="Something went wrong." />}
