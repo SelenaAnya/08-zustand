@@ -2,7 +2,7 @@
 
 import css from "./NoteForm.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { NewNoteData } from "@/types/note";
+import type { DraftNote } from "@/types/note";
 import { createNote } from "@/lib/api";
 import { useNoteStore } from "@/lib/store/noteStore";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,7 @@ export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (noteData: NewNoteData) => createNote(noteData),
+    mutationFn: (noteData: DraftNote) => createNote(noteData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       clearDraft();
@@ -40,7 +40,7 @@ export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
   });
 
   // Update the draft when the shape changes
-  
+
   useEffect(() => {
     setDraft(formData);
   }, [formData, setDraft]);

@@ -1,19 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-export interface DraftNote {
-  title: string;
-  content: string;
-  tag: string;
-}
+import type { DraftNote } from '@/types/note';
 
 const initialDraft: DraftNote = {
-  title: '',
-  content: '',
-  tag: 'Todo',
+  title: "",
+  content: "",
+  tag: "Todo",
 };
 
-interface NoteStore {
+type NoteStore ={
   draft: DraftNote;
   setDraft: (note: DraftNote) => void;
   clearDraft: () => void;

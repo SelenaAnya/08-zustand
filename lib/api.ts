@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Note, NewNoteData } from "../types/note";
+import type { Note, DraftNote } from "../types/note";
 
 const BASE_URL = "https://notehub-public.goit.study/api/notes";
 
@@ -34,7 +34,7 @@ export const fetchNoteById = async (id: number): Promise<Note> => {
   const res = await noteServiceClient.get<Note>(`/${id}`);
   return res.data;
 };
-export const createNote = async (noteData: NewNoteData): Promise<Note> => {
+export const createNote = async (noteData: DraftNote): Promise<Note> => {
   const res = await noteServiceClient.post<Note>("/", noteData);
   return res.data;
 };

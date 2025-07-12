@@ -4,7 +4,7 @@ import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import { useRouter } from "next/navigation";
 
-export default function NoteCreateClient() {
+export default function NoteCreateModal() {
   const router = useRouter();
 
   const handleCloseModal = () => {
@@ -12,12 +12,15 @@ export default function NoteCreateClient() {
   };
 
   const handleSuccess = () => {
-    router.back();
+    router.push("/notes/filter/All");
   };
 
   return (
     <Modal onClose={handleCloseModal}>
-      <NoteForm onClose={handleCloseModal} onSuccess={handleSuccess} />
+      <div style={{ padding: "20px", maxWidth: "500px" }}>
+        <h2 style={{ marginBottom: "20px", textAlign: "center" }}>Create New Note</h2>
+        <NoteForm onClose={handleCloseModal} onSuccess={handleSuccess} />
+      </div>
     </Modal>
   );
 }

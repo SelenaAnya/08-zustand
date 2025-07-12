@@ -21,11 +21,12 @@ export interface UpdateNoteData {
   tag: string;
 }
 
-export interface NewNoteData {
+export interface DraftNote {
   title: string;
   content: string;
   tag: string;
 }
+
 
 export type Tag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 
