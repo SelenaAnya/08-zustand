@@ -17,7 +17,6 @@ export const metadata: Metadata = {
         alt: "NoteHub - Page Not Found",
       },
     ],
-    type: "website",
   },
 };
 

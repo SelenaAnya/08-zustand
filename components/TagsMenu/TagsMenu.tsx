@@ -12,7 +12,7 @@ const tags: string[] = [
   "Meeting",
   "Shopping",
 ];
-// відкриття/закриття
+// opening/closing menu
 export default function TagsMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
