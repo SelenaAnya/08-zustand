@@ -39,7 +39,8 @@ export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
     },
   });
 
-  // Оновлення чернетки при зміні форми
+  // Update the draft when the shape changes
+  
   useEffect(() => {
     setDraft(formData);
   }, [formData, setDraft]);
@@ -84,7 +85,8 @@ export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
-    // Очищаємо помилку для поля, яке змінюється
+    // Clear the error for the field that is being changed
+
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: "" }));
     }

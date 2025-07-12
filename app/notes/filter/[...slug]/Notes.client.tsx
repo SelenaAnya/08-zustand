@@ -7,10 +7,9 @@ import { useDebounce } from "use-debounce";
 import type { FetchNoteService } from "@/lib/api";
 import css from "./NotesPage.module.css";
 import NoteList from "@/components/NoteList/NoteList";
-import Modal from "@/components/Modal/Modal";
-import NoteForm from "@/components/NoteForm/NoteForm";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
+import Link from "next/link";
 
 interface NotesClientProps {
   initialData: FetchNoteService;
@@ -18,7 +17,6 @@ interface NotesClientProps {
 }
 
 export default function NotesClient({ initialData, tag }: NotesClientProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [debounceSearchTerm] = useDebounce(searchTerm, 1000);
@@ -30,9 +28,6 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
     placeholderData: keepPreviousData,
     initialData,
   });
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   const handleSearchChange = (newTerm: string) => {
     setSearchTerm(newTerm);
@@ -50,18 +45,13 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
             onPageChange={setCurrentPage}
           />
         )}
-        <button className={css.button} onClick={openModal}>
+        <Link href="/notes/action/create" className={css.button}>
           Create note +
-        </button>
+        </Link>
       </header>
       {isLoading && <strong className={css.loading}>Loading notes...</strong>}
       {isError && <p>Something went wrong. Please try again.</p>}
       {data && <NoteList notes={data.notes} />}
-      {isModalOpen && (
-        <Modal onClose={closeModal}>
-          <NoteForm onClose={closeModal} onSuccess={closeModal} />
-        </Modal>
-      )}
     </div>
   );
 }

@@ -10,10 +10,11 @@ import ErrorText from '@/components/Error/Error';
 
 export default function NotesClient() {
   const { id } = useParams();
-  const router = useRouter();
+  // const router = useRouter();
   const {
     data: note,
     isError,
+    isLoading,
   } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(Number(id)),
@@ -24,18 +25,16 @@ export default function NotesClient() {
     return <strong className={css.loading}>Loading note...</strong>;
   }
 
-  if (!id) {
+  if (isError || !note) {
     return <ErrorText message="Note ID is required." />;
   }
   return (
     <>
-      {isError && <ErrorText message="Something went wrong." />}
-      {note && (
         <div className={css.container}>
           <div className={css.item}>
             <div className={css.header}>
               <h2>{note?.title}</h2>
-              <button className={css.backBtn} onClick={back}>
+              <button className={css.backBtn}>
                 Go back
               </button>
             </div>
@@ -43,7 +42,6 @@ export default function NotesClient() {
             <p className={css.date}>{note?.createdAt}</p>
           </div>
         </div>
-      )}
     </>
   );
 }
