@@ -8,21 +8,17 @@ import ErrorText from '@/components/Error/Error';
 
 export default function NoteDetailsClient() {
   const { id } = useParams();
-  const router = useRouter();
+  const parseId = Number(id);
   
   const {
     data: note,
     isError,
     isLoading,
   } = useQuery({
-    queryKey: ["note", id],
-    queryFn: () => fetchNoteById(Number(id)),
+    queryKey: ["note", parseId],
+    queryFn: () => fetchNoteById(parseId),
     refetchOnMount: false,
   });
-
-  const handleGoBack = () => {
-    router.back();
-  };
 
   if (isLoading) {
     return <strong className={css.loading}>Loading note...</strong>;
@@ -32,12 +28,16 @@ export default function NoteDetailsClient() {
     return <ErrorText message="Note not found or failed to load." />;
   }
 
+  if (!id || Number.isNaN(id)) {
+    return <ErrorText message="Invalid note ID." />;
+  }
+
   return (
     <div className={css.container}>
       <div className={css.item}>
         <div className={css.header}>
           <h2>{note.title}</h2>
-          <button className={css.backBtn} onClick={handleGoBack}>
+          <button className={css.backBtn}>
             Go back
           </button>
         </div>
