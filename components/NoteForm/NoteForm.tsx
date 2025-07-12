@@ -40,7 +40,6 @@ export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
   });
 
   // Update the draft when the shape changes
-
   useEffect(() => {
     setDraft(formData);
   }, [formData, setDraft]);

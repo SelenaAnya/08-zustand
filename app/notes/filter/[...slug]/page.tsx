@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { fetchNotes } from "@/lib/api";
 import NotesClient from "./Notes.client";
 
-// type FilteredNotesPageProps = {
-//   params: Promise<{ slug: string[] }>;
-// };
+type FilteredNotesPageProps = {
+  params: Promise<{ slug: string[] }>;
+};
 
 export async function generateMetadata({
   params,
