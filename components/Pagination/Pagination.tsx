@@ -15,13 +15,7 @@ export default function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (totalPages <= 1 || !isMounted) {
+  if (totalPages <= 1) {
     return null;
   }
 
