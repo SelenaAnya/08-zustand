@@ -1,46 +1,42 @@
-import type { Metadata } from "next";
 import { fetchNotes } from "@/lib/api";
 import NotesClient from "./Notes.client";
+import { Metadata } from "next";
 
-// type FilteredNotesPageProps = {
-//   params: Promise<{ slug: string[] }>;
-// };
-
-export async function generateMetadata({
+export const generateMetadata = async ({
   params,
 }: {
   params: Promise<{ slug: string[] }>;
-}): Promise<Metadata> {
-  // Extract the slug from params 
+}): Promise<Metadata> => {
   const { slug } = await params;
   const tag = slug[0] === "All" ? "All" : slug[0];
 
   return {
-    title: tag !== "All" ? `${tag} Notes | NoteHub` : "All Notes | NoteHub",
+    title: tag !== "All" ? `Notes tagged "${tag}"` : "All notes",
     description:
       tag !== "All"
-        ? `Browse your ${tag} notes in NoteHub. Filter and organize your notes by ${tag} category.`
-        : "Browse all your notes in NoteHub. Organize and manage your thoughts, ideas, and important information.",
+        ? `A collection of notes tagget with "${tag}"`
+        : "A collection of all notes",
     openGraph: {
-      title: 'Notes: ${tag}',
-      description: "display all notes or filter by tag",
+      title: `Notes: ${tag}`,
+      description: "some description",
       url: "https://notehub.com/notes/",
       images: [
         {
           url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
           width: 1200,
           height: 630,
-          alt: tag ? `Notes tagged "${tag}"` : "All notes",
+          alt: tag ? `Notes tagget "${tag}"` : "All notes",
         },
       ],
-    }
-  }
-
-  }
+    },
+  };
+};
 
 export default async function FilteredNotesPage({
   params,
-}: { params: Promise<{ slug: string[] }> }) {
+}: {
+  params: Promise<{ slug: string[] }>;
+}) {
   const { slug } = await params;
   const tag = slug[0] === "All" ? undefined : slug[0];
 
